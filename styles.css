@@ -1,0 +1,232 @@
+:root {
+  --font-hand: 'Caveat', cursive;
+  --font-body: 'Patrick Hand', cursive;
+  --cork-base: #b88352;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background: #2d1810;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cork Board Texture Background */
+body.theme-cork {
+  background-color: var(--cork-base);
+  background-image: 
+    radial-gradient(rgba(0, 0, 0, 0.15) 15%, transparent 16%),
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 16%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
+
+/* Header UI */
+.app-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #4a3525;
+}
+
+/* Main Corkboard Grid */
+.cork-board {
+  flex: 1;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  align-content: flex-start;
+  justify-content: center;
+}
+
+/* Base Note Box */
+.sticky-note {
+  position: relative;
+  width: 250px;
+  min-height: 220px;
+  padding: 1.75rem 1.25rem 1.25rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: #332211;
+  box-shadow: 4px 8px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sticky-note:hover {
+  transform: scale(1.04) rotate(0deg) !important;
+  z-index: 20;
+  box-shadow: 8px 14px 28px rgba(0,0,0,0.35);
+}
+
+.sticky-note h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dashed rgba(0,0,0,0.15);
+}
+
+/* Checklist Items */
+.task-list {
+  list-style: none;
+  flex: 1;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.task-item.done span {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* --- Attachments (Pins, Washi Tape, Clips) --- */
+
+/* Push Pin Pink */
+.pin-pink::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #ff9ebb, #e6004c);
+  border-radius: 50%;
+  box-shadow: 2px 4px 6px rgba(0,0,0,0.4);
+  z-index: 5;
+}
+
+/* Push Pin Green */
+.pin-green::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #a8e6cf, #2e7d32);
+  border-radius: 50%;
+  box-shadow: 2px 4px 6px rgba(0,0,0,0.4);
+  z-index: 5;
+}
+
+/* Washi Tape */
+.tape-washi::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 80px;
+  height: 22px;
+  background: rgba(255, 182, 193, 0.7);
+  border-left: 2px dashed rgba(255,255,255,0.5);
+  border-right: 2px dashed rgba(255,255,255,0.5);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+/* Paperclip */
+.clip-paper::before {
+  content: '📎';
+  position: absolute;
+  top: -16px;
+  right: 20px;
+  font-size: 1.8rem;
+  z-index: 5;
+}
+
+/* --- Note Styles --- */
+
+/* Pastel Pink Paper */
+.style-pink {
+  background: #fbe3e8;
+  border-radius: 2px 2px 12px 2px;
+}
+
+/* Ripped Parchment */
+.style-kraft {
+  background: #f4e8c1;
+  border-radius: 1px;
+  box-shadow: inset 0 0 20px rgba(160, 120, 60, 0.15), 4px 8px 18px rgba(0,0,0,0.25);
+}
+
+/* Polaroid Photo Style */
+.style-polaroid {
+  background: #ffffff;
+  padding: 1.25rem 1rem 2rem 1rem;
+  border-radius: 2px;
+  text-align: center;
+}
+
+/* Chalkboard (Premium Theme) */
+.style-chalkboard {
+  background: #2a3429;
+  color: #e2f0d9;
+  border: 2px solid #3d4a3c;
+}
+.style-chalkboard h3, .style-chalkboard .task-item { color: #e2f0d9; }
+
+/* Cloud Shape (Premium Theme) */
+.style-cloud {
+  background: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Widget & Modal Styling */
+.chat-widget { position: fixed; bottom: 25px; right: 25px; z-index: 1000; }
+.chat-toggle-btn { width: 60px; height: 60px; border-radius: 50%; border: none; background: #ffb7c5; font-size: 1.8rem; cursor: pointer; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
+.chat-window { position: absolute; bottom: 75px; right: 0; width: 320px; height: 420px; background: #fffdfa; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #f0e6df; }
+.chat-window.hidden, .modal.hidden { display: none; }
+.chat-header { background: #ffb7c5; color: #4a3525; padding: 0.85rem 1rem; font-family: 'Playfair Display', serif; font-weight: bold; display: flex; justify-content: space-between; }
+.chat-messages { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem; }
+.message { padding: 0.6rem 0.85rem; border-radius: 12px; font-size: 1.1rem; max-width: 85%; }
+.message.bot { background: #f3eae3; color: #332211; align-self: flex-start; }
+.message.user { background: #ffb7c5; color: #4a3525; align-self: flex-end; }
+.chat-input-area { padding: 0.6rem; display: flex; gap: 0.5rem; border-top: 1px solid #eee; }
+.chat-input-area input { flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ddd; border-radius: 20px; font-family: var(--font-body); }
+
+/* Buttons & Modal Setup */
+.btn { padding: 0.6rem 1.2rem; border: none; border-radius: 20px; cursor: pointer; font-family: var(--font-body); font-size: 1.1rem; font-weight: bold; }
+.primary-btn { background: #ffb7c5; color: #4a3525; }
+.cancel-btn { background: #e5e7eb; color: #374151; }
+
+.modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+.modal-content { background: #fffcf8; padding: 2rem; border-radius: 16px; width: 90%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+.picker-row { display: flex; gap: 1rem; }
+.picker-group { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; }
+.picker-group select, .modal-content input { padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px; font-family: var(--font-body); font-size: 1rem; }
+.task-input-group { display: flex; gap: 0.5rem; }
+.task-input-group input { flex: 1; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }

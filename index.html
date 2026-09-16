@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aesthetic Study & Motivation Board</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#b88352" />
+  <!-- Cute Handwritten Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Patrick+Hand&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body class="theme-cork">
+
+  <!-- Floating Header Bar -->
+  <header class="app-header">
+    <div class="logo">✨ Study More, Worry Less ✨</div>
+    <button id="add-note-btn" class="btn primary-btn">➕ Add Note</button>
+  </header>
+
+  <!-- Aesthetic Cork Board Workspace -->
+  <main class="cork-board" id="board-container">
+    <!-- Dynamic sticky notes render here -->
+  </main>
+
+  <!-- Floating Chatbot Companion -->
+  <div class="chat-widget" id="chat-widget">
+    <button class="chat-toggle-btn" id="chat-toggle" title="Chat with Companion">🎀</button>
+    <div class="chat-window hidden" id="chat-window">
+      <div class="chat-header">
+        <span>🧸 Board Companion</span>
+        <button id="close-chat-btn">&times;</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot">
+          Hi sweetheart! 🌸 How are you feeling today? Tell me your mood and let's go over your study goals together!
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="How are you feeling today? ♡" />
+        <button id="send-chat-btn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aesthetic Note Creation Modal -->
+  <div class="modal hidden" id="note-modal">
+    <div class="modal-content">
+      <h2>✨ Create Aesthetic Note</h2>
+      <input type="text" id="note-title" placeholder="Title (e.g. My Goals ♡)" />
+
+      <!-- Note Customization Options -->
+      <div class="picker-row">
+        <div class="picker-group">
+          <label>Pin / Clip:</label>
+          <select id="note-pin-select">
+            <option value="pin-pink">📍 Pink Push Pin</option>
+            <option value="pin-green">📍 Green Push Pin</option>
+            <option value="tape-washi">🩹 Washi Tape</option>
+            <option value="clip-paper">📎 Silver Paperclip</option>
+          </select>
+        </div>
+
+        <div class="picker-group">
+          <label>Paper Style:</label>
+          <select id="note-style-select">
+            <option value="style-pink">🌸 Pastel Pink Note</option>
+            <option value="style-kraft">📜 Ripped Parchment</option>
+            <option value="style-polaroid">🖼️ Polaroid Frame</option>
+            <option value="style-chalkboard">🕯️ Dark Board (🔒 Watch Ad)</option>
+            <option value="style-cloud">☁️ Cute Cloud Shape (🔒 Watch Ad)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="task-input-group">
+        <input type="text" id="task-item-input" placeholder="Add a checklist goal..." />
+        <button id="add-item-btn" type="button">Add</button>
+      </div>
+      <ul id="modal-task-list"></ul>
+
+      <div class="modal-actions">
+        <button id="save-note-btn" class="btn primary-btn">Pin to Board ♡</button>
+        <button id="cancel-note-btn" class="btn cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW failed:', err));
+    }
+  </script>
+</body>
+</html>
