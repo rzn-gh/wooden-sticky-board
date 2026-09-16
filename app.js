@@ -1,4 +1,6 @@
-// State Management
+// ==========================================
+// 1. STATE MANAGEMENT
+// ==========================================
 let notes = JSON.parse(localStorage.getItem('aesthetic_notes')) || [
   {
     id: 'demo-1',
@@ -29,7 +31,10 @@ let notes = JSON.parse(localStorage.getItem('aesthetic_notes')) || [
 let unlockedStyles = JSON.parse(localStorage.getItem('unlocked_styles')) || ['style-pink', 'style-kraft', 'style-polaroid'];
 let currentNewTaskItems = [];
 
-// DOM Elements
+// ==========================================
+// 2. DOM ELEMENTS
+// ==========================================
+// Board & Modal Elements
 const boardContainer = document.getElementById('board-container');
 const addNoteBtn = document.getElementById('add-note-btn');
 const noteModal = document.getElementById('note-modal');
@@ -42,16 +47,22 @@ const taskItemInput = document.getElementById('task-item-input');
 const addItemBtn = document.getElementById('add-item-btn');
 const modalTaskList = document.getElementById('modal-task-list');
 
-// Chat DOM Elements
+// Chatbot Elements
 const chatToggleBtn = document.getElementById('chat-toggle');
 const closeChatBtn = document.getElementById('close-chat-btn');
 const chatWindow = document.getElementById('chat-window');
+const chatInput = document.getElementById('chat-input');
+const sendChatBtn = document.getElementById('send-chat-btn');
+const chatMessages = document.getElementById('chat-messages');
 
 // Initial Render
 renderNotes();
 
-// UI Listeners
+// ==========================================
+// 3. NOTE CREATION & MODAL LISTENERS
+// ==========================================
 addNoteBtn.addEventListener('click', () => noteModal.classList.remove('hidden'));
+
 cancelNoteBtn.addEventListener('click', () => {
   noteModal.classList.add('hidden');
   resetModal();
@@ -66,7 +77,7 @@ addItemBtn.addEventListener('click', () => {
   }
 });
 
-// Watch Rewarded Ad for Locked Themes
+// Rewarded Ad Simulation for Exclusive Themes
 styleSelect.addEventListener('change', (e) => {
   const selectedStyle = e.target.value;
   if (!unlockedStyles.includes(selectedStyle)) {
@@ -89,7 +100,7 @@ saveNoteBtn.addEventListener('click', () => {
   const title = noteTitleInput.value.trim();
   if (!title) return alert('Please enter a title ♡');
 
-  const randomRotation = (Math.random() * 6 - 3).toFixed(1); // Slight random rotation (-3deg to +3deg)
+  const randomRotation = (Math.random() * 6 - 3).toFixed(1);
 
   const newNote = {
     id: 'note_' + Date.now(),
@@ -106,11 +117,101 @@ saveNoteBtn.addEventListener('click', () => {
   resetModal();
 });
 
-// Chat Widget Toggle
+// ==========================================
+// 4. CHATBOT COMPANION LOGIC
+// ==========================================
 chatToggleBtn.addEventListener('click', () => chatWindow.classList.toggle('hidden'));
 closeChatBtn.addEventListener('click', () => chatWindow.classList.add('hidden'));
 
-// State Helpers
+sendChatBtn.addEventListener('click', handleSendMessage);
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') handleSendMessage();
+});
+
+async function handleSendMessage() {
+  const userText = chatInput.value.trim();
+  if (!userText) return;
+
+  // 1. Render User Message
+  appendMessage(userText, 'user');
+  chatInput.value = '';
+
+  // 2. Render Loading Indicator
+  const loadingId = appendMessage('Thinking... 🌸', 'bot');
+
+  // 3. Gather Board Context
+  const boardContext = getBoardTasksSummary();
+
+  // 4. Call Serverless Backend Proxy
+  try {
+    const aiResponse = await fetchAIResponse(userText, boardContext);
+    updateMessage(loadingId, aiResponse);
+  } catch (err) {
+    console.error(err);
+    updateMessage(loadingId, "Oops! I couldn't connect right now. Please check your internet connection 💕");
+  }
+}
+
+// Fetch AI Response via Secure Backend Endpoint (/api/chat)
+async function fetchAIResponse(userMood, context) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      userMood: userMood,
+      boardContext: context
+    })
+  });
+
+  if (!res.ok) {
+    throw new Error('Server response failed');
+  }
+
+  const data = await res.json();
+  return data.reply;
+}
+
+// Extract task stats to feed into AI prompt
+function getBoardTasksSummary() {
+  let completed = [];
+  let pending = [];
+
+  notes.forEach(note => {
+    note.items.forEach(item => {
+      if (item.completed) {
+        completed.push(`"${item.text}" (from ${note.title})`);
+      } else {
+        pending.push(`"${item.text}" (from ${note.title})`);
+      }
+    });
+  });
+
+  return { completed, pending };
+}
+
+// UI Helpers for Messages
+function appendMessage(text, sender) {
+  const msgDiv = document.createElement('div');
+  const msgId = 'msg_' + Date.now();
+  msgDiv.id = msgId;
+  msgDiv.className = `message ${sender}`;
+  msgDiv.textContent = text;
+  chatMessages.appendChild(msgDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return msgId;
+}
+
+function updateMessage(msgId, newText) {
+  const msgDiv = document.getElementById(msgId);
+  if (msgDiv) {
+    msgDiv.textContent = newText;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+}
+
+// ==========================================
+// 5. HELPER FUNCTIONS & RENDERING
+// ==========================================
 function saveAndRender() {
   localStorage.setItem('aesthetic_notes', JSON.stringify(notes));
   renderNotes();

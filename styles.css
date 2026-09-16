@@ -230,3 +230,31 @@ body.theme-cork {
 .task-input-group { display: flex; gap: 0.5rem; }
 .task-input-group input { flex: 1; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+
+/* API Key Config Input Bar */
+.api-key-config {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: #fdf2f4;
+  border-bottom: 1px solid #f9a8d4;
+}
+
+.api-key-config input {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #f472b6;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.api-key-config button {
+  padding: 0.35rem 0.65rem;
+  background: #f472b6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
