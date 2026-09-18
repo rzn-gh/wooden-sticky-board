@@ -1,22 +1,21 @@
-// api/chat.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { userMood, boardContext } = req.body;
-  const apiKey = process.env.GEMINI_API_KEY; // Pulled securely from server environment
+  const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ error: 'Server API key missing' });
+    return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
   }
 
   const systemPrompt = `
     You are a warm, supportive, and sweet study companion sitting on an aesthetic corkboard workspace.
     
     Current User Tasks Context:
-    - Completed tasks today (${boardContext.completed.length}): ${boardContext.completed.length > 0 ? boardContext.completed.join(', ') : 'None yet'}
-    - Remaining tasks (${boardContext.pending.length}): ${boardContext.pending.length > 0 ? boardContext.pending.join(', ') : 'None'}
+    - Completed tasks today (${boardContext?.completed?.length || 0}): ${boardContext?.completed?.length > 0 ? boardContext.completed.join(', ') : 'None yet'}
+    - Remaining tasks (${boardContext?.pending?.length || 0}): ${boardContext?.pending?.length > 0 ? boardContext.pending.join(', ') : 'None'}
     
     Instructions:
     1. The user is sharing their mood or check-in: "${userMood}".
@@ -36,10 +35,16 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const reply = data.candidates[0].content.parts[0].text;
-    
+
+    if (!response.ok) {
+      console.error('Gemini Error:', data);
+      return res.status(500).json({ error: data.error?.message || 'Gemini API Error' });
+    }
+
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm right here with you! Keep taking small steps today 💕";
     return res.status(200).json({ reply });
   } catch (error) {
-    return res.status(500).json({ error: 'Failed to fetch response from Gemini' });
+    console.error('Server Handler Error:', error);
+    return res.status(500).json({ error: 'Server connection error' });
   }
 }
