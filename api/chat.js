@@ -1,16 +1,11 @@
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  // CORS & Preflight headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
@@ -22,8 +17,9 @@ export default async function handler(req, res) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.error('API Key Missing');
-      return res.status(200).json({ reply: "Configuration error: GEMINI_API_KEY is not set in Vercel environment variables 💕" });
+      return res.status(200).json({ 
+        reply: "Configuration missing! Please make sure GEMINI_API_KEY is added under Vercel Environment Variables. 💕" 
+      });
     }
 
     const completedTasks = boardContext?.completed?.length ? boardContext.completed.join(', ') : 'None yet';
@@ -46,11 +42,7 @@ Instructions:
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [
-            {
-              parts: [{ text: systemPrompt }]
-            }
-          ]
+          contents: [{ parts: [{ text: systemPrompt }] }]
         })
       }
     );
@@ -58,22 +50,20 @@ Instructions:
     const data = await googleResponse.json();
 
     if (!googleResponse.ok) {
-      console.error('Google API Error:', data);
       return res.status(200).json({ 
-        reply: `API Error: ${data.error?.message || 'Failed to communicate with Gemini.'}` 
+        reply: `Gemini API error: ${data.error?.message || 'Please verify your API key.'}` 
       });
     }
 
     const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!replyText) {
-      return res.status(200).json({ reply: "I'm having trouble thinking right now, but I'm here for you! 💕" });
+      return res.status(200).json({ reply: "I'm right here with you! Keep taking small steps today 💕" });
     }
 
     return res.status(200).json({ reply: replyText });
 
   } catch (err) {
-    console.error('Internal Server Error:', err);
-    return res.status(200).json({ reply: "Server error occurred while connecting. Please try again! 🌸" });
+    return res.status(200).json({ reply: "Connection glitch! Please try sending your message again 🌸" });
   }
 }
