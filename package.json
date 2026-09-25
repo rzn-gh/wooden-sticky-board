@@ -1,9 +1,5 @@
 {
   "name": "wooden-sticky-board",
   "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "echo 'No build step required'"
-  }
+  "private": true
 }
