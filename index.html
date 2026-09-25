@@ -25,27 +25,6 @@
     <!-- Dynamic sticky notes render here -->
   </main>
 
-  <!-- Floating Chatbot Companion -->
-  <div class="chat-widget" id="chat-widget">
-    <button class="chat-toggle-btn" id="chat-toggle" title="Chat with Companion">🎀</button>
-    <div class="chat-window hidden" id="chat-window">
-      <div class="chat-header">
-        <span>🧸 Board Companion</span>
-        <button id="close-chat-btn">&times;</button>
-      </div>
-      <div class="chat-messages" id="chat-messages">
-        <div class="message bot">
-          Hi sweetheart! 🌸 How are you feeling today? Tell me your mood and let's go over your study goals together!
-        </div>
-      </div>
-
-      <div class="chat-input-area">
-        <input type="text" id="chat-input" placeholder="How are you feeling today? ♡" />
-        <button id="send-chat-btn">Send</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Aesthetic Note Creation Modal -->
   <div class="modal hidden" id="note-modal">
     <div class="modal-content">
@@ -90,10 +69,5 @@
   </div>
 
   <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW failed:', err));
-    }
-  </script>
 </body>
 </html>
