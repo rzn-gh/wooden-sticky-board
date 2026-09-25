@@ -7,6 +7,7 @@ let notes = JSON.parse(localStorage.getItem('aesthetic_notes')) || [
     title: 'My Goals ♡',
     pinStyle: 'pin-pink',
     noteStyle: 'style-pink',
+    image: null,
     rotation: -2,
     items: [
       { text: 'Score 99%+', completed: false },
@@ -19,6 +20,7 @@ let notes = JSON.parse(localStorage.getItem('aesthetic_notes')) || [
     title: 'Study More ♡ Worry Less',
     pinStyle: 'tape-washi',
     noteStyle: 'style-kraft',
+    image: null,
     rotation: 1,
     items: [
       { text: 'Less scrolling', completed: true },
@@ -42,6 +44,7 @@ const saveNoteBtn = document.getElementById('save-note-btn');
 const noteTitleInput = document.getElementById('note-title');
 const pinSelect = document.getElementById('note-pin-select');
 const styleSelect = document.getElementById('note-style-select');
+const noteImageInput = document.getElementById('note-image-input');
 const taskItemInput = document.getElementById('task-item-input');
 const addItemBtn = document.getElementById('add-item-btn');
 const modalTaskList = document.getElementById('modal-task-list');
@@ -91,14 +94,29 @@ saveNoteBtn.addEventListener('click', () => {
   const title = noteTitleInput.value.trim();
   if (!title) return alert('Please enter a title ♡');
 
+  const file = noteImageInput ? noteImageInput.files[0] : null;
   const randomRotation = (Math.random() * 6 - 3).toFixed(1);
 
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imageDataUrl = e.target.result;
+      createNewNote(title, imageDataUrl, randomRotation);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    createNewNote(title, null, randomRotation);
+  }
+});
+
+function createNewNote(title, imageDataUrl, rotation) {
   const newNote = {
     id: 'note_' + Date.now(),
     title,
     pinStyle: pinSelect.value,
     noteStyle: styleSelect.value,
-    rotation: randomRotation,
+    image: imageDataUrl,
+    rotation,
     items: currentNewTaskItems
   };
 
@@ -106,7 +124,7 @@ saveNoteBtn.addEventListener('click', () => {
   saveAndRender();
   noteModal.classList.add('hidden');
   resetModal();
-});
+}
 
 // ==========================================
 // 4. HELPER FUNCTIONS & RENDERING
@@ -119,6 +137,7 @@ function saveAndRender() {
 function resetModal() {
   noteTitleInput.value = '';
   taskItemInput.value = '';
+  if (noteImageInput) noteImageInput.value = '';
   currentNewTaskItems = [];
   modalTaskList.innerHTML = '';
 }
@@ -139,6 +158,7 @@ function renderNotes() {
   boardContainer.innerHTML = notes.map(note => `
     <div class="sticky-note ${note.noteStyle} ${note.pinStyle}" style="transform: rotate(${note.rotation}deg);">
       <h3>${note.title}</h3>
+      ${note.image ? `<img src="${note.image}" class="note-attached-image" alt="Attached photo" />` : ''}
       <ul class="task-list">
         ${note.items.map((item, idx) => `
           <li class="task-item ${item.completed ? 'done' : ''}" onclick="toggleTask('${note.id}',${idx})">
