@@ -265,3 +265,46 @@ body {
   margin: 8px 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
+
+/* Note Action Buttons */
+.note-actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sticky-note:hover .note-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.1s ease;
+}
+
+.action-btn:hover {
+  transform: scale(1.15);
+}
+
+.remove-item-btn {
+  background: transparent;
+  border: none;
+  color: #ff4d4d;
+  cursor: pointer;
+  margin-left: 6px;
+  font-weight: bold;
+}

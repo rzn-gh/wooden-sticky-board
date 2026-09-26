@@ -32,6 +32,7 @@ let notes = JSON.parse(localStorage.getItem('aesthetic_notes')) || [
 
 let unlockedStyles = JSON.parse(localStorage.getItem('unlocked_styles')) || ['style-pink', 'style-kraft', 'style-polaroid'];
 let currentNewTaskItems = [];
+let editingNoteId = null;
 
 // ==========================================
 // 2. DOM ELEMENTS
@@ -41,6 +42,7 @@ const addNoteBtn = document.getElementById('add-note-btn');
 const noteModal = document.getElementById('note-modal');
 const cancelNoteBtn = document.getElementById('cancel-note-btn');
 const saveNoteBtn = document.getElementById('save-note-btn');
+const modalTitleHeader = document.querySelector('#note-modal h2');
 const noteTitleInput = document.getElementById('note-title');
 const pinSelect = document.getElementById('note-pin-select');
 const styleSelect = document.getElementById('note-style-select');
@@ -55,7 +57,12 @@ renderNotes();
 // ==========================================
 // 3. EVENT LISTENERS
 // ==========================================
-addNoteBtn.addEventListener('click', () => noteModal.classList.remove('hidden'));
+addNoteBtn.addEventListener('click', () => {
+  editingNoteId = null;
+  modalTitleHeader.textContent = '✨ Create Aesthetic Note';
+  resetModal();
+  noteModal.classList.remove('hidden');
+});
 
 cancelNoteBtn.addEventListener('click', () => {
   noteModal.classList.add('hidden');
@@ -101,26 +108,42 @@ saveNoteBtn.addEventListener('click', () => {
     const reader = new FileReader();
     reader.onload = function (e) {
       const imageDataUrl = e.target.result;
-      createNewNote(title, imageDataUrl, randomRotation);
+      saveOrUpdateNote(title, imageDataUrl, randomRotation);
     };
     reader.readAsDataURL(file);
   } else {
-    createNewNote(title, null, randomRotation);
+    // Keep existing image if editing without choosing a new file
+    const existingNote = notes.find(n => n.id === editingNoteId);
+    const existingImage = existingNote ? existingNote.image : null;
+    saveOrUpdateNote(title, existingImage, randomRotation);
   }
 });
 
-function createNewNote(title, imageDataUrl, rotation) {
-  const newNote = {
-    id: 'note_' + Date.now(),
-    title,
-    pinStyle: pinSelect.value,
-    noteStyle: styleSelect.value,
-    image: imageDataUrl,
-    rotation,
-    items: currentNewTaskItems
-  };
+function saveOrUpdateNote(title, imageDataUrl, rotation) {
+  if (editingNoteId) {
+    // Update existing note
+    const note = notes.find(n => n.id === editingNoteId);
+    if (note) {
+      note.title = title;
+      note.pinStyle = pinSelect.value;
+      note.noteStyle = styleSelect.value;
+      note.items = currentNewTaskItems;
+      if (imageDataUrl) note.image = imageDataUrl;
+    }
+  } else {
+    // Create new note
+    const newNote = {
+      id: 'note_' + Date.now(),
+      title,
+      pinStyle: pinSelect.value,
+      noteStyle: styleSelect.value,
+      image: imageDataUrl,
+      rotation,
+      items: currentNewTaskItems
+    };
+    notes.push(newNote);
+  }
 
-  notes.push(newNote);
   saveAndRender();
   noteModal.classList.add('hidden');
   resetModal();
@@ -135,6 +158,7 @@ function saveAndRender() {
 }
 
 function resetModal() {
+  editingNoteId = null;
   noteTitleInput.value = '';
   taskItemInput.value = '';
   if (noteImageInput) noteImageInput.value = '';
@@ -143,10 +167,42 @@ function resetModal() {
 }
 
 function renderModalItems() {
-  modalTaskList.innerHTML = currentNewTaskItems.map(item => `<li>${item.text}</li>`).join('');
+  modalTaskList.innerHTML = currentNewTaskItems.map(item => `
+    <li>
+    ${item.text}
+    </li>
+    `).join('');
 }
 
-function toggleTask(noteId, itemIndex) {
+function removeModalItem(index) {
+  currentNewTaskItems.splice(index, 1);
+  renderModalItems();
+}
+
+function openEditModal(noteId) {
+  const note = notes.find(n => n.id === noteId);
+  if (!note) return;
+
+  editingNoteId = noteId;
+  modalTitleHeader.textContent = '✏️ Edit Aesthetic Note';
+  noteTitleInput.value = note.title;
+  pinSelect.value = note.pinStyle;
+  styleSelect.value = note.noteStyle;
+  currentNewTaskItems = [...note.items];
+  
+  renderModalItems();
+  noteModal.classList.remove('hidden');
+}
+
+function deleteNote(noteId) {
+  if (confirm('Are you sure you want to remove this note from your board? 🌸')) {
+    notes = notes.filter(n => n.id !== noteId);
+    saveAndRender();
+  }
+}
+
+function toggleTask(noteId, itemIndex, event) {
+  event.stopPropagation();
   const note = notes.find(n => n.id === noteId);
   if (note && note.items[itemIndex]) {
     note.items[itemIndex].completed = !note.items[itemIndex].completed;
@@ -157,11 +213,15 @@ function toggleTask(noteId, itemIndex) {
 function renderNotes() {
   boardContainer.innerHTML = notes.map(note => `
     <div class="sticky-note ${note.noteStyle} ${note.pinStyle}" style="transform: rotate(${note.rotation}deg);">
+      <div class="note-actions">
+        <button class="action-btn edit-btn" onclick="openEditModal('${note.id}')" title="Edit Note">✏️</button>
+        <button class="action-btn delete-btn" onclick="deleteNote('${note.id}')" title="Delete Note">🗑️</button>
+      </div>
       <h3>${note.title}</h3>
       ${note.image ? `<img src="${note.image}" class="note-attached-image" alt="Attached photo" />` : ''}
       <ul class="task-list">
         ${note.items.map((item, idx) => `
-          <li class="task-item ${item.completed ? 'done' : ''}" onclick="toggleTask('${note.id}',${idx})">
+          <li class="task-item ${item.completed ? 'done' : ''}" onclick="toggleTask('${note.id}',${idx}, event)">
             <span>${item.completed ? '☑' : '☐'} ${item.text}</span>
           </li>
         `).join('')}
