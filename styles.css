@@ -308,3 +308,173 @@ body {
   margin-left: 6px;
   font-weight: bold;
 }
+
+/* ==========================================
+   NEW PAPER STYLES 
+   ========================================== */
+
+/* Minimal Beige Blank */
+.style-beige {
+  background-color: #e8d8ce;
+  color: #4a3525;
+  border: 1px solid #d4c2b5;
+}
+
+/* Crimson Binder Page */
+.style-red-punched {
+  background-color: #d16b68;
+  color: #ffffff;
+  box-shadow: inset 20px 0 0 #b35250;
+}
+
+/* Ring Spiral Notebook */
+.style-spiral {
+  background-color: #f7f1eb;
+  color: #3e2723;
+  border-top: 12px dashed #4a3525;
+}
+
+/* Lined Brown Kraft Paper */
+.style-brown-lined {
+  background-color: #aa8565;
+  color: #ffffff;
+  background-image: repeating-linear-gradient(transparent, transparent 23px, #8d6b4f 24px);
+}
+
+/* Classic Graph Grid */
+.style-grid {
+  background-color: #fbf9f6;
+  color: #333;
+  background-image: 
+    linear-gradient(#d3c9bf 1px, transparent 1px),
+    linear-gradient(90deg, #d3c9bf 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Soft Pink Curled Corner */
+.style-curled {
+  background-color: #e4c4bd;
+  color: #4a3525;
+  border-bottom-right-radius: 20px;
+}
+
+/* Dark Chocolate Bullet Grid */
+.style-dot-grid {
+  background-color: #523b2b;
+  color: #f7ece1;
+  background-image: radial-gradient(#a3846e 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* Peach Gingham Grid */
+.style-peach-grid {
+  background-color: #f3c2b2;
+  color: #4a3525;
+  background-image: 
+    linear-gradient(#e0a696 1px, transparent 1px),
+    linear-gradient(90deg, #e0a696 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Terracotta Layered Pad */
+.style-terracotta {
+  background-color: #cd6862;
+  color: #ffffff;
+  box-shadow: 4px 4px 0 #aa4f4a, 8px 8px 0 #883a36;
+}
+
+/* Spiral Torn Edge Note */
+.style-torn {
+  background-color: #faf5f0;
+  color: #3e2723;
+  box-shadow: inset 16px 0 0 #ded3c8;
+}
+
+/* Framed Solid Card */
+.style-minimal-shadow {
+  background-color: #c9a38f;
+  color: #ffffff;
+  border: 2px solid #5a4032;
+}
+
+/* Blank Horizontal Strip */
+.style-wide-blank {
+  background-color: #f3e5dc;
+  color: #4a3525;
+  border: 1px solid #d3c0b4;
+}
+
+/* Light Peach Ruled Lines */
+.style-soft-lined {
+  background-color: #f7e0d3;
+  color: #3e2723;
+  background-image: repeating-linear-gradient(transparent, transparent 21px, #d1b1a0 22px);
+}
+
+/* Rounded Mocha Card */
+.style-rounded-kraft {
+  background-color: #a47654;
+  color: #ffffff;
+  border-radius: 18px;
+}
+
+/* ==========================================
+   NEW TAPE & ACCESORY STYLES
+   ========================================== */
+
+/* Diagonal Stripe Tape */
+.tape-striped::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75px;
+  height: 20px;
+  background: repeating-linear-gradient(45deg, #ded3c8, #ded3c8 8px, #3e2723 8px, #3e2723 16px);
+  opacity: 0.85;
+}
+
+/* Kraft Paper Tape */
+.tape-kraft::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 20px;
+  background-color: #cbb29d;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Coral Dotted Tape */
+.tape-dots::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 22px;
+  background-color: #d86c66;
+  background-image: radial-gradient(#ffffff 20%, transparent 20%);
+  background-size: 6px 6px;
+  opacity: 0.9;
+}
+
+/* Checkered Pattern Tape */
+.tape-checkered::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 22px;
+  background-image: linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  background-color: #fff;
+  opacity: 0.85;
+}
