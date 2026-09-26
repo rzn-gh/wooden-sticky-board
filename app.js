@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ==========================================
-  // 1. STATE MANAGEMENT
-  // ==========================================
   let notes = [];
   try {
     notes = JSON.parse(localStorage.getItem('aesthetic_notes')) || [];
@@ -26,13 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
   }
 
-  let unlockedStyles = JSON.parse(localStorage.getItem('unlocked_styles')) || ['style-beige', 'style-polaroid'];
   let currentNewTaskItems = [];
   let editingNoteId = null;
 
-  // ==========================================
-  // 2. DOM ELEMENTS
-  // ==========================================
   const boardContainer = document.getElementById('board-container');
   const addNoteBtn = document.getElementById('add-note-btn');
   const noteModal = document.getElementById('note-modal');
@@ -47,12 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const addItemBtn = document.getElementById('add-item-btn');
   const modalTaskList = document.getElementById('modal-task-list');
 
-  // Initial Render
   renderNotes();
 
-  // ==========================================
-  // 3. EVENT LISTENERS
-  // ==========================================
   if (addNoteBtn) {
     addNoteBtn.addEventListener('click', () => {
       editingNoteId = null;
@@ -104,9 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ==========================================
-  // 4. HELPER FUNCTIONS & RENDERING
-  // ==========================================
   function compressImage(base64Str, maxWidth, quality, callback) {
     const img = new Image();
     img.src = base64Str;
@@ -214,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `).join('');
 
-    // Attach click events safely
     boardContainer.querySelectorAll('.edit-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = e.currentTarget.getAttribute('data-id');

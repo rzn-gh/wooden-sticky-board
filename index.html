@@ -7,69 +7,64 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#b88352" />
-  <!-- Cute Handwritten Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Patrick+Hand&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body class="theme-cork">
 
-  <!-- Floating Header Bar -->
   <header class="app-header">
     <div class="logo">✨ Study More, Worry Less ✨</div>
     <button id="add-note-btn" class="btn primary-btn">➕ Add Note</button>
   </header>
 
-  <!-- Aesthetic Cork Board Workspace -->
-  <main class="cork-board" id="board-container">
-    <!-- Dynamic sticky notes render here -->
-  </main>
+  <main class="cork-board" id="board-container"></main>
 
-  <!-- Aesthetic Note Creation Modal -->
   <div class="modal hidden" id="note-modal">
     <div class="modal-content">
       <h2>✨ Create Aesthetic Note</h2>
       <input type="text" id="note-title" placeholder="Title (e.g. My Goals ♡)" />
 
-      <!-- Note Customization Options -->
-      <div class="picker-group">
-        <label>Pin / Tape / Clip</label>
-        <select id="note-pin-selector">
-          <option value="pin-pink">📍 Pink Push Pin</option>
-          <option value="pin-green">📍 Green Push Pin</option>
-          <option value="tape-washi">🩹 Pink Washi Tape</option>
-          <option value="tape-striped">💈 Diagonal Stripe Tape</option>
-          <option value="tape-kraft">📜 Kraft Paper Tape</option>
-          <option value="tape-dots">🔴 Coral Dotted Tape</option>
-          <option value="tape-checkered">🏁 Checkered Pattern Tape</option>
-          <option value="clip-paper">📎 Silver Paperclip</option>
-        </select>
-      </div>
+      <div class="picker-row">
+        <div class="picker-group">
+          <label for="note-pin-select">Pin / Tape / Clip:</label>
+          <select id="note-pin-select">
+            <option value="pin-pink">📍 Pink Push Pin</option>
+            <option value="pin-green">📍 Green Push Pin</option>
+            <option value="tape-washi">🩹 Pink Washi Tape</option>
+            <option value="tape-striped">💈 Diagonal Stripe Tape</option>
+            <option value="tape-kraft">📜 Kraft Paper Tape</option>
+            <option value="tape-dots">🔴 Coral Dotted Tape</option>
+            <option value="tape-checkered">🏁 Checkered Pattern Tape</option>
+            <option value="clip-paper">📎 Silver Paperclip</option>
+          </select>
+        </div>
 
-      <div class="picker-group">
-        <label>Paper Style:</label>
-        <select id="note-style-select">
-          <option value="style-beige">🏷️ Minimal Beige Blank</option>
-          <option value="style-polaroid">🖼️ Vintage Polaroid Frame</option>
-          <option value="style-red-punched">🔴 Crimson Binder Page</option>
-          <option value="style-spiral">📓 Ring Spiral Notebook</option>
-          <option value="style-brown-lined">📜 Lined Brown Kraft Paper</option>
-          <option value="style-grid">📐 Classic Graph Grid</option>
-          <option value="style-curled">📄 Soft Pink Curled Corner</option>
-          <option value="style-dot-grid">✒️ Dark Chocolate Bullet Grid</option>
-          <option value="style-peach-grid">🍑 Peach Gingham Grid</option>
-          <option value="style-terracotta">🧱 Terracotta Layered Pad</option>
-          <option value="style-torn">📄 Spiral Torn Edge Note</option>
-          <option value="style-minimal-shadow">📦 Framed Solid Card</option>
-          <option value="style-wide-blank">✉️ Blank Horizontal Strip</option>
-          <option value="style-soft-lined">📝 Light Peach Ruled Lines</option>
-          <option value="style-rounded-kraft">🍫 Rounded Mocha Card</option>
-        </select>
+        <div class="picker-group">
+          <label for="note-style-select">Paper Style:</label>
+          <select id="note-style-select">
+            <option value="style-beige">🏷️ Minimal Beige Blank</option>
+            <option value="style-polaroid">🖼️ Vintage Polaroid Frame</option>
+            <option value="style-red-punched">🔴 Crimson Binder Page</option>
+            <option value="style-spiral">📓 Ring Spiral Notebook</option>
+            <option value="style-brown-lined">📜 Lined Brown Kraft Paper</option>
+            <option value="style-grid">📐 Classic Graph Grid</option>
+            <option value="style-curled">📄 Soft Pink Curled Corner</option>
+            <option value="style-dot-grid">✒️ Dark Chocolate Bullet Grid</option>
+            <option value="style-peach-grid">🍑 Peach Gingham Grid</option>
+            <option value="style-terracotta">🧱 Terracotta Layered Pad</option>
+            <option value="style-torn">📄 Spiral Torn Edge Note</option>
+            <option value="style-minimal-shadow">📦 Framed Solid Card</option>
+            <option value="style-wide-blank">✉️ Blank Horizontal Strip</option>
+            <option value="style-soft-lined">📝 Light Peach Ruled Lines</option>
+            <option value="style-rounded-kraft">🍫 Rounded Mocha Card</option>
+          </select>
+        </div>
       </div>
       
-      <div>
-        <label>Attach Photo</label>
-        <input type="file" id="note-image-input" accept="image/*">
+      <div class="picker-group">
+        <label for="note-image-input">Attach Photo (Optional):</label>
+        <input type="file" id="note-image-input" accept="image/*" />
       </div>
 
       <div class="task-input-group">
